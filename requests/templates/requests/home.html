@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<meta name="viewport"
+		content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+	<title></title>
+	<link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+	<h1>Prueba de gestión asíncrona con django y jquery</h1>
+	<input type="text" name="edad" id="edad" placeholder="Enter your age">
+	<button type="button" onclick="fetchData()">Fetch data asynchronously</button>
+	{% csrf_token %}
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+	<script>
+
+		$(document).ready(function () {
+			console.log("Está funcionando")
+		});
+
+		function getCookie(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+
+		function fetchData() {
+			const csrftoken = getCookie('csrftoken');
+
+			console.log("token", csrftoken);
+			let edad = $('#edad').val();
+			$.ajax({
+				type: 'POST',
+				data: "edad=" + edad,
+				headers: { 'X-CSRFToken': csrftoken },
+				url: 'asyncResponse/',
+				success: function (data) {
+					console.log(data);
+				},
+				error: function (error) {
+					console.error('ERROR: ' + error.message);
+				}
+
+			})
+		}
+	</script>
+</body>
+
+</html>
