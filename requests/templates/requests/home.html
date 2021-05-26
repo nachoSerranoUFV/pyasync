@@ -15,7 +15,14 @@
 	<h1>Prueba de gestión asíncrona con django y jquery</h1>
 	<input type="text" name="edad" id="edad" placeholder="Enter your age">
 	<button type="button" onclick="fetchData()">Fetch data asynchronously</button>
-	{% csrf_token %}
+	<hr>
+	<div class="data-received">
+		<input type="text" id="nombre" placeholder="Nombre" readonly>
+		<input type="text" id="apellido" placeholder="Apellidos" readonly>
+		<input type="text" id="cargo" placeholder="Cargo" readonly>
+		<input type="text" id="edadRecuperada" placeholder="Edad introducida" readonly>
+	</div>
+
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
 	<script>
@@ -51,7 +58,11 @@
 				headers: { 'X-CSRFToken': csrftoken },
 				url: 'asyncResponse/',
 				success: function (data) {
-					console.log(data);
+					console.log(data.edad);
+					$('#nombre').val(data.name);
+					$('#apellido').val(data.apellido);
+					$('#cargo').val(data.cargo);
+					$('#edadRecuperada').val(data.edad);
 				},
 				error: function (error) {
 					console.error('ERROR: ' + error.message);
